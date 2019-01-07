@@ -19,7 +19,7 @@ abstract class BaseFragment : MvpAppCompatFragment(), BaseView {
             inflater.inflate(getLayout(), container, false)
 
     override fun showProgressBar(show: Boolean) {
-        progress_bar.visibility = if (show) View.VISIBLE else View.GONE
+        activity?.progress_bar?.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     abstract fun getLayout(): Int

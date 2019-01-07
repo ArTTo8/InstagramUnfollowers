@@ -1,4 +1,4 @@
-package com.artto.instagramunfollowers.ui.main
+package com.artto.instagramunfollowers.ui
 
 import android.os.Bundle
 import com.artto.instagramunfollowers.R

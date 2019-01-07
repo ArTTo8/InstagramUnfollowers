@@ -2,11 +2,13 @@ package com.artto.instagramunfollowers.di
 
 import android.content.Context
 import android.webkit.WebView
+import com.artto.instagramunfollowers.data.ApplicationUserDataStore
 import com.artto.instagramunfollowers.data.api.ApiConstants
 import com.artto.instagramunfollowers.data.api.ApiMethods
 import com.artto.instagramunfollowers.data.api.RequestInterceptor
 import com.artto.instagramunfollowers.data.api.ResponseInterceptor
 import com.artto.instagramunfollowers.data.interactor.InstagramInteractor
+import com.artto.instagramunfollowers.data.repository.ApplicationUserRepository
 import com.artto.instagramunfollowers.data.repository.CookieRepository
 import com.artto.instagramunfollowers.data.repository.InstagramRepository
 import com.artto.instagramunfollowers.ui.login.LoginPresenter
@@ -51,7 +53,11 @@ val dataModule = module {
                 .create<ApiMethods>(ApiMethods::class.java)
     }
 
+    single { ApplicationUserDataStore(androidContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)) }
+    single { ApplicationUserRepository(get()) }
+
     single { InstagramRepository(get()) }
 
-    single { InstagramInteractor(get()) }
+    single { InstagramInteractor(get(), get(), get()) }
+
 }
