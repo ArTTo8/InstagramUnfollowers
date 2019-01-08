@@ -10,8 +10,8 @@ object ApiConstants {
     }
 
     object QueryHashes {
-        const val GET_USER = "7c16654f22c819fb63d1183034a5162f"
-        const val GET_USER_POSTS = "a5164aed103f24b03e7b7747a2d94e3c"
+        const val GET_FOLLOWING = "c56ee0ae1f89cdbd1c89e2bc6b8f3d18"
+        const val GET_FOLLOWERS = "56066f031e6239f35a904ac20c9f37d9"
     }
 
     object Cookies {

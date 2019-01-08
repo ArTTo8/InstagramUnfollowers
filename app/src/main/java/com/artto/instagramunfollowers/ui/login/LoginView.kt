@@ -9,4 +9,7 @@ interface LoginView : BaseView {
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun navigateToMain()
 
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun showInputs()
+
 }

@@ -1,5 +1,6 @@
 package com.artto.instagramunfollowers.data.interactor
 
+import com.artto.instagramunfollowers.data.api.response.RelationshipsResponse
 import com.artto.instagramunfollowers.data.entity.User
 import com.artto.instagramunfollowers.data.exception.InstagramAuthorizationException
 import com.artto.instagramunfollowers.data.repository.ApplicationUserRepository
@@ -7,11 +8,12 @@ import com.artto.instagramunfollowers.data.repository.CookieRepository
 import com.artto.instagramunfollowers.data.repository.InstagramRepository
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 
 class InstagramInteractor(private val instagramRepository: InstagramRepository,
                           private val userRepository: ApplicationUserRepository,
                           private val cookieRepository: CookieRepository) {
+
+    fun getUserObservable() = userRepository.userObservable
 
     fun getUserSingle() = userRepository.userSingle
 
@@ -30,6 +32,14 @@ class InstagramInteractor(private val instagramRepository: InstagramRepository,
                 userRepository.clear()
                 cookieRepository.clear()
             }
-            .subscribeOn(Schedulers.io())
+
+    fun getUserProfileDetails(username: String): Single<User> =
+            instagramRepository.getUserProfileDetails(username)
+
+    fun getUserFollowing(userId: String, cursor: String, count: Int): Single<RelationshipsResponse> =
+            instagramRepository.getUserFollowing(userId, cursor, count)
+
+    fun getUserFollowers(userId: String, cursor: String, count: Int): Single<RelationshipsResponse> =
+            instagramRepository.getUserFollowers(userId, cursor, count)
 
 }

@@ -7,6 +7,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.artto.instagramunfollowers.R
 import com.artto.instagramunfollowers.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.item_user.*
 import org.koin.android.ext.android.inject
 
 class LoginFragment : BaseFragment(), LoginView {
@@ -29,6 +30,12 @@ class LoginFragment : BaseFragment(), LoginView {
 
     override fun navigateToMain() =
             navController.navigate(LoginFragmentDirections.actionLoginFragmentToMainFragment())
+
+    override fun showInputs() {
+        et_username.visibility = View.VISIBLE
+        et_password.visibility = View.VISIBLE
+        b_login.visibility = View.VISIBLE
+    }
 
     override fun getLayout() = R.layout.fragment_login
 

@@ -25,39 +25,40 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 
 
 val uiModule = module {
-    factory { MainPresenter() }
+
+    factory { MainPresenter(get()) }
     factory { LoginPresenter(get()) }
+
 }
 
 
 val dataModule = module {
+
     single { CookieRepository(androidContext().getSharedPreferences("Cookies", Context.MODE_PRIVATE)) }
-
-    single {
-        OkHttpClient.Builder()
-                .addInterceptor(RequestInterceptor(get(), WebView(androidContext()).settings.userAgentString))
-                .addInterceptor(ResponseInterceptor(get()))
-                .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
-                .build()
-    }
-
+    single { createOkHttpClient(get(), WebView(androidContext()).settings.userAgentString) }
     single { ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false) }
-
-    single {
-        Retrofit.Builder()
-                .baseUrl(ApiConstants.BASE_URL)
-                .client(get())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
-                .addConverterFactory(JacksonConverterFactory.create(get()))
-                .build()
-                .create<ApiMethods>(ApiMethods::class.java)
-    }
+    single { createService<ApiMethods>(get(), get()) }
+    single { InstagramRepository(get(), get()) }
 
     single { ApplicationUserDataStore(androidContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)) }
     single { ApplicationUserRepository(get()) }
 
-    single { InstagramRepository(get()) }
-
     single { InstagramInteractor(get(), get(), get()) }
 
 }
+
+fun createOkHttpClient(cookieRepository: CookieRepository, userAgentString: String): OkHttpClient =
+        OkHttpClient.Builder()
+                .addInterceptor(RequestInterceptor(cookieRepository, userAgentString))
+                .addInterceptor(ResponseInterceptor(cookieRepository))
+                .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+                .build()
+
+inline fun <reified T> createService(okHttpClient: OkHttpClient, objectMapper: ObjectMapper): T =
+        Retrofit.Builder()
+                .baseUrl(ApiConstants.BASE_URL)
+                .client(okHttpClient)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
+                .addConverterFactory(JacksonConverterFactory.create(objectMapper))
+                .build()
+                .create(T::class.java)
