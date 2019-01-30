@@ -6,6 +6,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.artto.instagramunfollowers.R
 import com.artto.instagramunfollowers.ui.base.BaseFragment
+import com.artto.instagramunfollowers.utils.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.item_user.*
 import org.koin.android.ext.android.inject
@@ -25,6 +26,8 @@ class LoginFragment : BaseFragment(), LoginView {
             presenter.onLoginClicked(
                     et_username.text.toString(),
                     et_password.text.toString())
+
+            view.hideKeyboard()
         }
     }
 

@@ -1,7 +1,10 @@
 package com.artto.instagramunfollowers.ui.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
@@ -28,10 +31,16 @@ class MainFragment : BaseFragment(), MainView {
         recyclerAdapter = UsersRecyclerAdapter(presenter)
         with(rv_users) {
             adapter = recyclerAdapter
-            addOnScrollListener(EndlessRecyclerViewScrollListener(
-                    layoutManager as LinearLayoutManager,
-                    presenter::onLoadMore))
         }
+
+        sv_search.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?) = true
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                presenter.onFilter(newText ?: "")
+                return true
+            }
+        })
     }
 
     override fun setUsername(username: String) {

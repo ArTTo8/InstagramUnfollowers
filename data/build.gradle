@@ -26,6 +26,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    aaptOptions {
+        ignoreAssetsPattern "!*ffmpeg"
+    }
 }
 
 dependencies {
@@ -37,7 +41,6 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
     implementation "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version"
 
-    //Retrofit
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_adapter_version"
-    implementation "com.squareup.retrofit2:converter-jackson:$retrofit_converter_version"
+    //Instagram API
+    implementation "com.github.charlieAndroidDev:Instagram4Android:$instagram_api_version"
 }

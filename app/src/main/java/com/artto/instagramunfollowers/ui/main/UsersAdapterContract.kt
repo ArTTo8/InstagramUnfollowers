@@ -22,11 +22,11 @@ class UsersRecyclerAdapter(private val presenter: UsersAdapterPresenter) : Recyc
 
 class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), UserItemView {
 
-    override fun setData(imageUrl: String, username: String, listener: (Int) -> Unit) {
+    override fun setData(imageUrl: String, username: String, unfollowClickListener: (Int) -> Unit) {
         with(itemView) {
             Glide.with(this).load(imageUrl).into(iv_user_profile_image)
             tv_user_username.text = username
-            b_user_unfollow.setOnClickListener { listener.invoke(adapterPosition) }
+            b_user_unfollow.setOnClickListener { unfollowClickListener.invoke(adapterPosition) }
         }
     }
 
