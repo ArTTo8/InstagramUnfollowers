@@ -18,4 +18,6 @@ class UserDataStore(private val sharedPreferences: SharedPreferences) {
             .putString(KEY_PASSWORD, password)
             .apply()
 
+    fun clearUserData() = sharedPreferences.edit().clear().apply()
+
 }

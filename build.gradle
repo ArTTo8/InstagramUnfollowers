@@ -31,6 +31,7 @@ ext.appcompat_version = "1.1.0-alpha01"
 ext.constraint_layout_version = "2.0.0-alpha3"
 ext.cardview_version = "1.0.0"
 ext.material_version = "1.1.0-alpha02"
+ext.android_ktx_version = "1.0.0"
 
 ext.moxy_version = "1.5.5"
 

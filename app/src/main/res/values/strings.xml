@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">Unfollowers</string>
+
     <string name="etLogin">Username</string>
     <string name="etPassword">Password</string>
     <string name="bLogin">Sign in</string>
-    <string name="Unfollow">Unfollow</string>
-    <string name="loginError">Authorization error</string>
-    <string name="bUnfollowAll">Unfollow first 10</string>
-    <string name="dialogUnfollowAll">Unfollow first 10?</string>
-    <string name="dialogLogOut">Do you want to sign out?</string>
-    <string name="stop">Stop</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="attention">Warning!</string>
-    <string name="logoDescription">logo</string>
-    <string name="backPressed">"Click BACK again to exit"</string>
+
+    <string name="unfollow">Unfollow</string>
+    <string name="follow">Follow</string>
+
+    <string name="menu_log_out">Log out</string>
+
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="unfollowers">Unfollowers</string>
+
 </resources>

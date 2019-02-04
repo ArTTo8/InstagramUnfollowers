@@ -3,7 +3,6 @@ package com.artto.instagramunfollowers.ui.login
 import com.arellomobile.mvp.InjectViewState
 import com.artto.instagramunfollowers.data.InstagramRepository
 import com.artto.instagramunfollowers.ui.base.BasePresenter
-import com.artto.instagramunfollowers.utils.withProgress
 import com.artto.instagramunfollowers.utils.withSchedulers
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
@@ -16,22 +15,25 @@ class LoginPresenter(private val instagramRepository: InstagramRepository) : Bas
     override fun onFirstViewAttach() {
         with(instagramRepository.getUserData()) {
             if (first.isNotBlank() && second.isNotBlank())
-                onLoginClicked(first, second)
+                login(first, second)
             else
-                viewState.showInputs()
+                viewState.showInputs(true)
         }
     }
 
     fun onLoginClicked(username: String, password: String) = login(username, password)
 
     private fun login(username: String, password: String) {
-        instagramRepository.login(username, password)
+        instagramRepository.logIn(username, password)
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
-                .withProgress(viewState::showProgressBar)
-                .doOnError { viewState.showInputs() }
+                .doOnSubscribe { viewState.showInputs(false) }
                 .subscribeBy(
                         onSuccess = { viewState.navigateToMain() },
-                        onError = { it.printStackTrace() })
+                        onError = {
+                            it.printStackTrace()
+                            viewState.onLoginFailed()
+                            viewState.showInputs(true)
+                        })
                 .addTo(compositeDisposable)
     }
 
