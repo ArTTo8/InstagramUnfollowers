@@ -1,4 +1,4 @@
-package com.artto.instagramunfollowers.utils
+package com.artto.instagramunfollowers.utils.extension
 
 import android.content.Context
 import android.view.View

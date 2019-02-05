@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.net.toUri
-import androidx.core.view.get
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.arellomobile.mvp.presenter.InjectPresenter
@@ -13,7 +12,8 @@ import com.artto.instagramunfollowers.R
 import com.artto.instagramunfollowers.ui.base.BaseFragment
 import com.artto.instagramunfollowers.ui.menu.MenuDialogFragment
 import com.artto.instagramunfollowers.utils.*
-import com.google.android.material.tabs.TabLayout
+import com.artto.instagramunfollowers.utils.extension.addOnTabSelectedListener
+import com.artto.instagramunfollowers.utils.extension.setOnQueryTextChangedListener
 import dev.niekirk.com.instagram4android.requests.payload.InstagramUserSummary
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.*

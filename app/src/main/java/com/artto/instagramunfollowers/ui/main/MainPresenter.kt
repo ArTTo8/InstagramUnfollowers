@@ -5,6 +5,8 @@ import com.artto.instagramunfollowers.data.InstagramRepository
 import com.artto.instagramunfollowers.data.InstagramUser
 import com.artto.instagramunfollowers.ui.base.BasePresenter
 import com.artto.instagramunfollowers.utils.*
+import com.artto.instagramunfollowers.utils.extension.withProgress
+import com.artto.instagramunfollowers.utils.extension.withSchedulers
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy

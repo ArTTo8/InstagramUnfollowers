@@ -1,4 +1,4 @@
-package com.artto.instagramunfollowers.utils
+package com.artto.instagramunfollowers.utils.extension
 
 import com.google.android.material.tabs.TabLayout
 

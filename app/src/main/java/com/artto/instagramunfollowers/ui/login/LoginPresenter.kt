@@ -3,7 +3,7 @@ package com.artto.instagramunfollowers.ui.login
 import com.arellomobile.mvp.InjectViewState
 import com.artto.instagramunfollowers.data.InstagramRepository
 import com.artto.instagramunfollowers.ui.base.BasePresenter
-import com.artto.instagramunfollowers.utils.withSchedulers
+import com.artto.instagramunfollowers.utils.extension.withSchedulers
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
