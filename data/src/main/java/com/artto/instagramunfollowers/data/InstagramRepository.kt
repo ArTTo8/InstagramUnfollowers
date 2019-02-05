@@ -1,6 +1,5 @@
 package com.artto.instagramunfollowers.data
 
-import dev.niekirk.com.instagram4android.Instagram4Android
 import dev.niekirk.com.instagram4android.requests.InstagramFollowRequest
 import dev.niekirk.com.instagram4android.requests.InstagramGetUserFollowersRequest
 import dev.niekirk.com.instagram4android.requests.InstagramGetUserFollowingRequest
@@ -14,7 +13,7 @@ import io.reactivex.functions.BiFunction
 
 class InstagramRepository(private val userDataStore: UserDataStore) {
 
-    private lateinit var instagram: Instagram4Android
+    private lateinit var instagram: Instagram
 
     val users = ArrayList<InstagramUser>()
 
@@ -22,7 +21,7 @@ class InstagramRepository(private val userDataStore: UserDataStore) {
 
 
     fun logIn(username: String, password: String): Single<InstagramLoggedUser> = Single.create {
-        instagram = Instagram4Android(username, password)
+        instagram = Instagram(username, password)
         instagram.setup()
 
         val result = instagram.login()
