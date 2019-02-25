@@ -8,6 +8,8 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.artto.instagramunfollowers.R
 import com.artto.instagramunfollowers.ui.base.BaseDialogFragment
 import com.artto.instagramunfollowers.ui.main.MainFragmentDirections
+import com.artto.instagramunfollowers.ui.statistic.StatisticDialogFragment
+import com.artto.instagramunfollowers.utils.createFragment
 import kotlinx.android.synthetic.main.dialog_menu.*
 import org.koin.android.ext.android.inject
 
@@ -23,6 +25,7 @@ class MenuDialogFragment : BaseDialogFragment(), MenuView {
         super.onViewCreated(view, savedInstanceState)
 
         tv_log_out.setOnClickListener { presenter.onLogOutClicked() }
+        tv_statistic.setOnClickListener { presenter.onStatisticClicked() }
     }
 
     override fun onResume() {
@@ -33,6 +36,10 @@ class MenuDialogFragment : BaseDialogFragment(), MenuView {
                     (resources.displayMetrics.widthPixels * 0.9).toInt(),
                     attributes.height)
         }
+    }
+
+    override fun navigateToStatistic() {
+        parentFragment?.childFragmentManager?.let { createFragment<StatisticDialogFragment>().show(it, null) }
     }
 
     override fun navigateToLogin() = findNavController().navigate(MainFragmentDirections.actionMainFragmentToLoginFragment())

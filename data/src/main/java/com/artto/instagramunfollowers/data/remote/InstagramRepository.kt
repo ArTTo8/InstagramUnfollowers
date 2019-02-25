@@ -1,5 +1,9 @@
-package com.artto.instagramunfollowers.data
+package com.artto.instagramunfollowers.data.remote
 
+import com.artto.instagramunfollowers.data.local.UserDataStore
+import com.artto.instagramunfollowers.data.local.db.entity.StatisticEntity
+import com.artto.instagramunfollowers.data.local.db.repository.StatisticRepository
+import com.artto.instagramunfollowers.utils.setTimeToDateStart
 import dev.niekirk.com.instagram4android.requests.InstagramFollowRequest
 import dev.niekirk.com.instagram4android.requests.InstagramGetUserFollowersRequest
 import dev.niekirk.com.instagram4android.requests.InstagramGetUserFollowingRequest
@@ -10,8 +14,10 @@ import dev.niekirk.com.instagram4android.requests.payload.StatusResult
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
+import java.util.*
 
-class InstagramRepository(private val userDataStore: UserDataStore) {
+class InstagramRepository(private val userDataStore: UserDataStore,
+                          private val statisticRepository: StatisticRepository) {
 
     private lateinit var instagram: Instagram
 
@@ -33,6 +39,7 @@ class InstagramRepository(private val userDataStore: UserDataStore) {
     fun logOut() {
         users.clear()
         userDataStore.clearUserData()
+        statisticRepository.clear()
     }
 
 
@@ -59,9 +66,15 @@ class InstagramRepository(private val userDataStore: UserDataStore) {
                         users.clear()
                         users.addAll(temp.map { InstagramUser(it, followers.contains(it), following.contains(it)) }.distinct())
 
-                        users.filter { it.isFollowedByUser && !it.isFollower }
-                    })
+                        return@BiFunction users.filter { it.isFollowedByUser && !it.isFollower }
+                    }).flatMap { users -> saveStatistic().map { users } }
 
+    private fun saveStatistic() = statisticRepository.insert(
+            StatisticEntity(
+                    Calendar.getInstance().setTimeToDateStart().time,
+                    users.filter { it.isFollower }.size,
+                    users.filter { it.isFollowedByUser }.size,
+                    users.filter { it.isFollowedByUser && !it.isFollower }.size))
 
     private fun getAllFollowers(): Single<List<InstagramUserSummary>> = Single.create {
         val result = ArrayList<InstagramUserSummary>()

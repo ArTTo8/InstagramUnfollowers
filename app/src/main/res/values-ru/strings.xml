@@ -9,4 +9,8 @@
     <string name="following">Вы подписаны</string>
     <string name="unfollowers">Невзаимные</string>
     <string name="follow">Подписаться</string>
+    <string name="statistic_followers">Подписчики\n%1$d</string>
+    <string name="statistic_following">Вы подписаны\n%1$d</string>
+    <string name="statistic_unfollowers">Невзаимные\n%1$d</string>
+    <string name="menu_statistic">Статистика</string>
 </resources>

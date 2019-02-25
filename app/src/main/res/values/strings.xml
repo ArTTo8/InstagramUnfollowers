@@ -9,9 +9,14 @@
     <string name="follow">Follow</string>
 
     <string name="menu_log_out">Log out</string>
+    <string name="menu_statistic">Statistic</string>
 
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="unfollowers">Unfollowers</string>
+
+    <string name="statistic_followers">Followers count\n%1$d</string>
+    <string name="statistic_following">Following count\n%1$d</string>
+    <string name="statistic_unfollowers">Unfollowers count\n%1$d</string>
 
 </resources>

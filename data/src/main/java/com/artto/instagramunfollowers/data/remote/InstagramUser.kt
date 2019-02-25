@@ -1,4 +1,4 @@
-package com.artto.instagramunfollowers.data
+package com.artto.instagramunfollowers.data.remote
 
 import dev.niekirk.com.instagram4android.requests.payload.InstagramUserSummary
 

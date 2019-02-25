@@ -1,4 +1,4 @@
-package com.artto.instagramunfollowers.data;
+package com.artto.instagramunfollowers.data.remote;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,17 +25,17 @@ import okhttp3.OkHttpClient.Builder;
 import okhttp3.Response;
 
 public class Instagram extends Instagram4Android {
-    protected String deviceId;
+    private String deviceId;
     private String username;
     private String password;
     private String accessToken;
-    protected boolean isLoggedIn;
+    private boolean isLoggedIn;
     private String uuid;
-    protected String rankToken;
+    private String rankToken;
     private long userId;
-    protected Response lastResponse;
-    protected OkHttpClient client;
-    private final HashMap<String, Cookie> cookieStore = new HashMap();
+    private Response lastResponse;
+    private OkHttpClient client;
+    private final HashMap<String, Cookie> cookieStore = new HashMap<>();
 
     public Instagram(String username, String password) {
         super(username, password);
@@ -56,7 +56,7 @@ public class Instagram extends Instagram4Android {
             }
 
             public List<Cookie> loadForRequest(HttpUrl url) {
-                ArrayList<Cookie> validCookies = new ArrayList();
+                ArrayList<Cookie> validCookies = new ArrayList<>();
 
                 for (Entry<String, Cookie> entry : Instagram.this.cookieStore.entrySet()) {
                     Cookie cookie = entry.getValue();

@@ -1,8 +1,8 @@
 package com.artto.instagramunfollowers.ui.main
 
 import com.arellomobile.mvp.InjectViewState
-import com.artto.instagramunfollowers.data.InstagramRepository
-import com.artto.instagramunfollowers.data.InstagramUser
+import com.artto.instagramunfollowers.data.remote.InstagramRepository
+import com.artto.instagramunfollowers.data.remote.InstagramUser
 import com.artto.instagramunfollowers.ui.base.BasePresenter
 import com.artto.instagramunfollowers.utils.*
 import com.artto.instagramunfollowers.utils.extension.withProgress

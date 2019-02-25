@@ -1,4 +1,4 @@
-package com.artto.instagramunfollowers.data
+package com.artto.instagramunfollowers.data.local
 
 import android.content.SharedPreferences
 

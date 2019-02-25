@@ -42,6 +42,7 @@ class MainFragment : BaseFragment(), MainView {
         recyclerAdapter = UsersRecyclerAdapter(presenter)
         rv_users.apply {
             setHasFixedSize(true)
+            setItemViewCacheSize(30)
             adapter = recyclerAdapter
 
             (layoutManager as? LinearLayoutManager)?.let {

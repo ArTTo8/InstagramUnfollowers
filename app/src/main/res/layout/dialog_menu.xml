@@ -5,6 +5,21 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/tv_statistic"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:fontFamily="@font/futurademic"
+        android:gravity="center"
+        android:text="@string/menu_statistic"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray" />
+
+    <TextView
         android:id="@+id/tv_log_out"
         android:layout_width="match_parent"
         android:layout_height="52dp"

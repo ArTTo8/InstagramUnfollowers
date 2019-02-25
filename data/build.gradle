@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
@@ -41,6 +42,11 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
     implementation "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version"
 
+    //Room DB
+    implementation "androidx.room:room-runtime:$rootProject.ext.room_version"
+    implementation "androidx.room:room-rxjava2:$rootProject.ext.room_version"
+    kapt "androidx.room:room-compiler:$rootProject.ext.room_version"
+
     //Instagram API
-    implementation "com.github.charlieAndroidDev:Instagram4Android:$instagram_api_version"
+    implementation "com.github.charlieAndroidDev:Instagram4Android:$rootProject.ext.instagram_api_version"
 }
