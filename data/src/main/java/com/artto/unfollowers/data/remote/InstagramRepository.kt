@@ -30,9 +30,13 @@ class InstagramRepository(private val userDataStore: UserDataStore,
         instagram = Instagram(username, password)
         instagram.setup()
 
-        val result = instagram.login()
-        userDataStore.saveUserData(instagram.username, instagram.password)
-        it.onSuccess(result.logged_in_user)
+        try {
+            val result = instagram.login()
+            userDataStore.saveUserData(instagram.username, instagram.password)
+            it.onSuccess(result.logged_in_user)
+        } catch (e: Exception) {
+            it.tryOnError(e)
+        }
     }
 
 
@@ -44,16 +48,24 @@ class InstagramRepository(private val userDataStore: UserDataStore,
 
 
     fun unfollow(userId: Long): Completable = Completable.create {
-        instagram.sendRequest(InstagramUnfollowRequest(userId))
-        users.apply { first { it.pk == userId }.isFollowedByUser = false }
-        it.onComplete()
+        try {
+            instagram.sendRequest(InstagramUnfollowRequest(userId))
+            users.apply { first { it.pk == userId }.isFollowedByUser = false }
+            it.onComplete()
+        } catch (e: Exception) {
+            it.tryOnError(e)
+        }
     }
 
 
     fun follow(userId: Long): Single<StatusResult> = Single.create {
-        val result = instagram.sendRequest(InstagramFollowRequest(userId))
-        users.apply { first { it.pk == userId }.isFollowedByUser = true }
-        it.onSuccess(result)
+        try {
+            val result = instagram.sendRequest(InstagramFollowRequest(userId))
+            users.apply { first { it.pk == userId }.isFollowedByUser = true }
+            it.onSuccess(result)
+        } catch (e: Exception) {
+            it.tryOnError(e)
+        }
     }
 
 
@@ -81,17 +93,21 @@ class InstagramRepository(private val userDataStore: UserDataStore,
         var cursor = ""
         var hasNext = true
 
-        while (hasNext) {
-            val response = instagram.sendRequest(InstagramGetUserFollowersRequest(instagram.userId, cursor))
-            result.addAll(response.users)
+        try {
+            while (hasNext) {
+                val response = instagram.sendRequest(InstagramGetUserFollowersRequest(instagram.userId, cursor))
+                result.addAll(response.users)
 
-            if (response.next_max_id.isNullOrBlank())
-                hasNext = false
-            else
-                cursor = response.next_max_id
+                if (response.next_max_id.isNullOrBlank())
+                    hasNext = false
+                else
+                    cursor = response.next_max_id
+            }
+
+            it.onSuccess(result)
+        } catch (e: Exception) {
+            it.tryOnError(e)
         }
-
-        it.onSuccess(result)
     }
 
 
@@ -100,17 +116,22 @@ class InstagramRepository(private val userDataStore: UserDataStore,
         var cursor = ""
         var hasNext = true
 
-        while (hasNext) {
-            val response = instagram.sendRequest(InstagramGetUserFollowingRequest(instagram.userId, cursor))
-            result.addAll(response.users)
+        try {
+            while (hasNext) {
+                val response = instagram.sendRequest(InstagramGetUserFollowingRequest(instagram.userId, cursor))
+                result.addAll(response.users)
 
-            if (response.next_max_id.isNullOrBlank())
-                hasNext = false
-            else
-                cursor = response.next_max_id
+                if (response.next_max_id.isNullOrBlank())
+                    hasNext = false
+                else
+                    cursor = response.next_max_id
+            }
+
+            it.onSuccess(result)
+        } catch (e: Exception) {
+            it.tryOnError(e)
         }
-
-        it.onSuccess(result)
     }
+
 
 }

@@ -6,15 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.artto.unfollowers.R
 import com.artto.unfollowers.data.remote.InstagramUser
-import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import kotlinx.android.synthetic.main.item_user.view.*
 
-class UsersRecyclerAdapter(private val presenter: UsersAdapterPresenter) : RecyclerView.Adapter<UserViewHolder>() {
+class UsersRecyclerAdapter(private val presenter: UsersAdapterPresenter,
+                           private val requestManager: RequestManager) : RecyclerView.Adapter<UserViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder =
-            UserViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false))
+            UserViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false), requestManager)
 
     override fun getItemCount() = presenter.getItemCount()
 
@@ -28,14 +29,13 @@ class UsersRecyclerAdapter(private val presenter: UsersAdapterPresenter) : Recyc
 }
 
 
-class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), UserItemView {
+class UserViewHolder(itemView: View, private val requestManager: RequestManager) : RecyclerView.ViewHolder(itemView), UserItemView {
 
     override fun setData(user: InstagramUser, unfollowClickListener: (Int) -> Unit, followClickListener: (Int) -> Unit, itemClickListener: (Int) -> Unit) {
         with(itemView) {
             setOnClickListener { itemClickListener.invoke(adapterPosition) }
 
-            Glide.with(iv_user_profile_image)
-                    .load(user.profile_pic_url)
+            requestManager.load(user.profile_pic_url)
                     .transition(withCrossFade())
                     .transform(CircleCrop())
                     .override(100)
@@ -56,10 +56,7 @@ class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), UserIt
         }
     }
 
-    override fun recycle() {
-        Glide.with(itemView.iv_user_profile_image)
-                .clear(itemView.iv_user_profile_image)
-    }
+    override fun recycle() = requestManager.clear(itemView.iv_user_profile_image)
 
 }
 

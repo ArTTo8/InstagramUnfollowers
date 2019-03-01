@@ -8,8 +8,8 @@ abstract class BasePresenter<T : BaseView> : MvpPresenter<T>() {
     protected val compositeDisposable = CompositeDisposable()
 
     override fun onDestroy() {
-        super.onDestroy()
         compositeDisposable.clear()
+        super.onDestroy()
     }
 
 }
