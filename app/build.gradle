@@ -12,11 +12,11 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "com.artto.instagramunfollowers"
+        applicationId "com.artto.unfollowers"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.3"
+        versionCode 1
+        versionName "1"
         multiDexEnabled = true
     }
 
@@ -96,4 +96,5 @@ dependencies {
 
     //MPAndroidChart
     implementation "com.github.PhilJay:MPAndroidChart:$rootProject.ext.mp_android_chart_version"
+
 }
