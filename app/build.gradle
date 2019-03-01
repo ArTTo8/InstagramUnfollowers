@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
@@ -67,6 +69,10 @@ dependencies {
     //NavigationUI
     implementation "android.arch.navigation:navigation-fragment-ktx:$rootProject.ext.navigation_version"
     implementation "android.arch.navigation:navigation-ui-ktx:$rootProject.ext.navigation_version"
+
+    //Firebase
+    implementation "com.google.firebase:firebase-core:$rootProject.ext.firebase_version"
+    implementation "com.crashlytics.sdk.android:crashlytics:$rootProject.ext.crashlitics_version"
 
     //Moxy
     implementation "com.arello-mobile:moxy-app-compat:$rootProject.ext.moxy_version"
