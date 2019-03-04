@@ -1,0 +1,43 @@
+{
+  "project_info": {
+    "project_number": "665175165809",
+    "firebase_url": "https://unfollowers-579e1.firebaseio.com",
+    "project_id": "unfollowers-579e1",
+    "storage_bucket": "unfollowers-579e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665175165809:android:9ba2adb306381d17",
+        "android_client_info": {
+          "package_name": "com.artto.unfollowers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "665175165809-a33hf9bb90vsqfvuvronkmvrphhm1j5c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJcBY6rbQbIZ6AHMk_oYvWFpgTRIOtx2E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      },
+      "admob_app_id": "ca-app-pub-6538899012774414~8964757438"
+    }
+  ],
+  "configuration_version": "1"
+}

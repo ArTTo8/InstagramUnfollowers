@@ -18,26 +18,35 @@
             app:layout_collapseMode="pin"
             app:layout_scrollFlags="snap|scroll|enterAlways">
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/sv_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/b_toolbar_username"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:layout_gravity="end"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/bg_toolbar_username"
-                android:ellipsize="end"
-                android:fontFamily="@font/futurademic"
-                android:maxWidth="70dp"
-                android:maxLines="1"
-                android:textAllCaps="false"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp"
-                tools:text="@tools:sample/cities" />
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/sv_search"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2" />
+
+                <Button
+                    android:id="@+id/b_toolbar_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="15dp"
+                    android:background="@drawable/bg_toolbar_username"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/futurademic"
+                    android:maxWidth="1000dp"
+                    android:maxLines="1"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"
+                    tools:text="@tools:sample/cities" />
+
+            </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
 

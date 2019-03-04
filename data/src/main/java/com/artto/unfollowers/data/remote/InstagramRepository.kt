@@ -3,6 +3,7 @@ package com.artto.unfollowers.data.remote
 import com.artto.unfollowers.data.local.UserDataStore
 import com.artto.unfollowers.data.local.db.entity.StatisticEntity
 import com.artto.unfollowers.data.local.db.repository.StatisticRepository
+import com.artto.unfollowers.utils.Ads
 import com.artto.unfollowers.utils.setTimeToDateStart
 import dev.niekirk.com.instagram4android.requests.InstagramFollowRequest
 import dev.niekirk.com.instagram4android.requests.InstagramGetUserFollowersRequest
@@ -20,10 +21,22 @@ class InstagramRepository(private val userDataStore: UserDataStore,
                           private val statisticRepository: StatisticRepository) {
 
     private lateinit var instagram: Instagram
+    private var adShowCounter = 0
 
     val users = ArrayList<InstagramUser>()
 
     fun getUserData() = userDataStore.loadUserData()
+
+    fun getUserId() = instagram.userId
+
+    fun needToShowAd(): Boolean =
+            if (adShowCounter <= 0) {
+                adShowCounter = Ads.FOLLOW_UNFOLLOW_AD_COUNTER
+                true
+            } else {
+                --adShowCounter
+                false
+            }
 
 
     fun logIn(username: String, password: String): Single<InstagramLoggedUser> = Single.create {
@@ -40,11 +53,10 @@ class InstagramRepository(private val userDataStore: UserDataStore,
     }
 
 
-    fun logOut() = statisticRepository.clear()
-            .doOnComplete {
-                users.clear()
-                userDataStore.clearUserData()
-            }
+    fun logOut() {
+        users.clear()
+        userDataStore.clearUserData()
+    }
 
 
     fun unfollow(userId: Long): Completable = Completable.create {
@@ -84,6 +96,7 @@ class InstagramRepository(private val userDataStore: UserDataStore,
     private fun saveStatistic() = statisticRepository.insert(
             StatisticEntity(
                     Calendar.getInstance().setTimeToDateStart().time,
+                    instagram.userId,
                     users.filter { it.isFollower }.size,
                     users.filter { it.isFollowedByUser }.size,
                     users.filter { it.isFollowedByUser && !it.isFollower }.size))

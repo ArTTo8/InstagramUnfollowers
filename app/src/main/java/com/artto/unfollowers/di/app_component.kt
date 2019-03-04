@@ -20,7 +20,7 @@ val uiModule = module {
     factory { MainPresenter(get()) }
     factory { LoginPresenter(get()) }
     factory { MenuPresenter(get()) }
-    factory { StatisticPresenter(get()) }
+    factory { StatisticPresenter(get(), get()) }
 
 }
 
@@ -29,10 +29,15 @@ val dataModule = module {
     single { androidContext().getSharedPreferences(KEY_SHARED_USER, Context.MODE_PRIVATE) }
     single { UserDataStore(get()) }
 
-    single { Room.databaseBuilder(androidContext(), AppDatabase::class.java, "unfollowers").build() }
-    single { (get() as AppDatabase).statisticDao() }
-    single { StatisticRepository(get()) }
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "unfollowers")
+                .fallbackToDestructiveMigration()
+                .build()
+    }
 
+    single { (get() as AppDatabase).statisticDao() }
+
+    single { StatisticRepository(get()) }
     single { InstagramRepository(get(), get()) }
 
 }

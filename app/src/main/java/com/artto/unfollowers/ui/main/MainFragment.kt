@@ -18,6 +18,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 import dev.niekirk.com.instagram4android.requests.payload.InstagramUserSummary
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -32,6 +35,14 @@ class MainFragment : BaseFragment(), MainView {
     fun providePresenter() = inject<MainPresenter>().value
 
     private lateinit var recyclerAdapter: UsersRecyclerAdapter
+
+    private lateinit var interstitialAd: InterstitialAd
+    private var adRequest = AdRequest.Builder().addTestDevice("1DFA9DCEA0A8B3E80023BD68C54CF544").build()
+    private val adListener = object : AdListener() {
+        override fun onAdClosed() {
+            interstitialAd.loadAd(adRequest)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,14 +67,34 @@ class MainFragment : BaseFragment(), MainView {
             }
         }
 
-        sv_search.setOnQueryTextChangedListener {
-            presenter.onFilter(it)
-            true
+        with(sv_search) {
+            setOnQueryTextFocusChangeListener { _, hasFocus ->
+                if (hasFocus)
+                    b_toolbar_username.visibility = View.GONE
+                else {
+                    b_toolbar_username.visibility = View.VISIBLE
+                    sv_search.isIconified = true
+                }
+            }
+
+            setOnQueryTextChangedListener {
+                presenter.onFilter(it)
+                true
+            }
         }
 
         b_toolbar_username.setOnClickListener { createFragment<MenuDialogFragment>().show(childFragmentManager, null) }
 
         fab_up.setOnClickListener { rv_users.smoothScrollToPosition(0) }
+
+        interstitialAd = InterstitialAd(context)
+        with(interstitialAd) {
+            adUnitId = Ads.FOLLOW_UNFOLLOW_AD_ID
+            adListener = this@MainFragment.adListener
+            loadAd(adRequest)
+        }
+
+        tl_groups.getTabAt(savedInstanceState?.getInt(KEY_TAB_POSITION, 0) ?: 0)?.select()
     }
 
     override fun setUsername(username: String) {
@@ -93,11 +124,26 @@ class MainFragment : BaseFragment(), MainView {
         }
     }
 
+    override fun showAd() {
+        if (this::interstitialAd.isInitialized && interstitialAd.isLoaded)
+            interstitialAd.show()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putInt(KEY_TAB_POSITION, tl_groups.selectedTabPosition)
+    }
+
     override fun onDestroyView() {
         rv_users.adapter = null
         super.onDestroyView()
     }
 
     override fun getLayout() = R.layout.fragment_main
+
+    companion object {
+        private const val KEY_TAB_POSITION = "tab_position"
+    }
 
 }

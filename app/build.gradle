@@ -73,6 +73,7 @@ dependencies {
     //Firebase
     implementation "com.google.firebase:firebase-core:$rootProject.ext.firebase_version"
     implementation "com.crashlytics.sdk.android:crashlytics:$rootProject.ext.crashlitics_version"
+    implementation "com.google.android.gms:play-services-ads:$rootProject.ext.ads_version"
 
     //Moxy
     implementation "com.arello-mobile:moxy-app-compat:$rootProject.ext.moxy_version"

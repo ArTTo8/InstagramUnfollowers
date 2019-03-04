@@ -9,9 +9,12 @@ import java.util.*
 @Entity(tableName = DBConfig.Statistic.TABLE_NAME)
 data class StatisticEntity(
 
-        @PrimaryKey()
+        @PrimaryKey
         @ColumnInfo(name = DBConfig.Statistic.DATE)
         val date: Date,
+
+        @ColumnInfo(name = DBConfig.Statistic.USER_ID)
+        val userId: Long,
 
         @ColumnInfo(name = DBConfig.Statistic.FOLLOWERS_COUNT)
         val followersCount: Int,

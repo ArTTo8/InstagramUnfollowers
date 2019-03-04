@@ -65,6 +65,7 @@ class MainPresenter(private val instagramRepository: InstagramRepository) : Base
         instagramRepository.unfollow(items[position].pk)
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .withProgress(viewState::showProgressBar)
+                .doOnSubscribe { if (instagramRepository.needToShowAd()) viewState.showAd() }
                 .subscribeBy(onError = { it.printStackTrace() })
                 .addTo(compositeDisposable)
 
@@ -77,6 +78,7 @@ class MainPresenter(private val instagramRepository: InstagramRepository) : Base
         instagramRepository.follow(items[position].pk)
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .withProgress(viewState::showProgressBar)
+                .doOnSubscribe { if (instagramRepository.needToShowAd()) viewState.showAd() }
                 .subscribeBy(
                         onSuccess = {
                             if (it.status == "ok") {

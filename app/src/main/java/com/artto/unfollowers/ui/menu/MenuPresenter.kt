@@ -17,10 +17,7 @@ class MenuPresenter(private val instagramRepository: InstagramRepository) : Base
 
     fun onLogOutClicked() {
         instagramRepository.logOut()
-                .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
-                .subscribeBy(
-                        onError = { viewState.navigateToLogin() },
-                        onComplete = { viewState.navigateToLogin() })
+        viewState.navigateToLogin()
     }
 
 }

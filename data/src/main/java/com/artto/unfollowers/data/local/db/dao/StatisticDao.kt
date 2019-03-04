@@ -8,8 +8,8 @@ import io.reactivex.Single
 @Dao
 interface StatisticDao {
 
-    @Query("SELECT * FROM ${DBConfig.Statistic.TABLE_NAME}")
-    fun getAll(): Single<List<StatisticEntity>>
+    @Query("SELECT * FROM ${DBConfig.Statistic.TABLE_NAME} WHERE ${DBConfig.Statistic.USER_ID} = :userId")
+    fun getAll(userId: Long): Single<List<StatisticEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(statisticsRecordEntity: StatisticEntity): Long

@@ -2,6 +2,7 @@ package com.artto.unfollowers.ui.statistic
 
 import com.arellomobile.mvp.InjectViewState
 import com.artto.unfollowers.data.local.db.repository.StatisticRepository
+import com.artto.unfollowers.data.remote.InstagramRepository
 import com.artto.unfollowers.ui.base.BasePresenter
 import com.artto.unfollowers.utils.extension.withSchedulers
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -10,10 +11,11 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 @InjectViewState
-class StatisticPresenter(private val statisticRepository: StatisticRepository) : BasePresenter<StatisticView>() {
+class StatisticPresenter(private val statisticRepository: StatisticRepository,
+                         private val instagramRepository: InstagramRepository) : BasePresenter<StatisticView>() {
 
     override fun onFirstViewAttach() {
-        statisticRepository.getAll()
+        statisticRepository.getAll(instagramRepository.getUserId())
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .subscribeBy(
                         onSuccess = { viewState.showData(it) },

@@ -29,4 +29,7 @@ interface MainView : BaseView {
     @StateStrategyType(AddToEndSingleStrategy::class)
     fun collapseSearchView()
 
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun showAd()
+
 }

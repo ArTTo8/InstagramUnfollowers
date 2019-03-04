@@ -8,7 +8,7 @@ import io.reactivex.schedulers.Schedulers
 
 class StatisticRepository(private val dao: StatisticDao) {
 
-    fun getAll(): Single<List<StatisticEntity>> = dao.getAll()
+    fun getAll(userId: Long): Single<List<StatisticEntity>> = dao.getAll(userId)
             .subscribeOn(Schedulers.io())
 
     fun insert(recordEntity: StatisticEntity): Single<Long> = Single.fromCallable { dao.insert(recordEntity) }

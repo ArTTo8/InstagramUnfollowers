@@ -40,6 +40,7 @@ class MenuDialogFragment : BaseDialogFragment(), MenuView {
 
     override fun navigateToStatistic() {
         parentFragment?.childFragmentManager?.let { createFragment<StatisticDialogFragment>().show(it, null) }
+        dismiss()
     }
 
     override fun navigateToLogin() = findNavController().navigate(MainFragmentDirections.actionMainFragmentToLoginFragment())

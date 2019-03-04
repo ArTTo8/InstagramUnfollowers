@@ -17,6 +17,7 @@ buildscript {
 
         firebase_version = "16.0.7"
         crashlitics_version = "2.9.9"
+        ads_version = "17.1.3"
 
         moxy_version = "1.5.5"
 
