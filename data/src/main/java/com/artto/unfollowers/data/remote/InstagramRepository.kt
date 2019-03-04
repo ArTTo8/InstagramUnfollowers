@@ -3,7 +3,6 @@ package com.artto.unfollowers.data.remote
 import com.artto.unfollowers.data.local.UserDataStore
 import com.artto.unfollowers.data.local.db.entity.StatisticEntity
 import com.artto.unfollowers.data.local.db.repository.StatisticRepository
-import com.artto.unfollowers.utils.Ads
 import com.artto.unfollowers.utils.setTimeToDateStart
 import dev.niekirk.com.instagram4android.requests.InstagramFollowRequest
 import dev.niekirk.com.instagram4android.requests.InstagramGetUserFollowersRequest
@@ -31,7 +30,7 @@ class InstagramRepository(private val userDataStore: UserDataStore,
 
     fun needToShowAd(): Boolean =
             if (adShowCounter <= 0) {
-                adShowCounter = Ads.FOLLOW_UNFOLLOW_AD_COUNTER
+                adShowCounter = 5
                 true
             } else {
                 --adShowCounter
