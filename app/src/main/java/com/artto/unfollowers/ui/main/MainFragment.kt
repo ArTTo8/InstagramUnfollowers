@@ -37,7 +37,7 @@ class MainFragment : BaseFragment(), MainView {
     private lateinit var recyclerAdapter: UsersRecyclerAdapter
 
     private lateinit var interstitialAd: InterstitialAd
-    private var adRequest = AdRequest.Builder().addTestDevice("1DFA9DCEA0A8B3E80023BD68C54CF544").build()
+    private var adRequest = AdRequest.Builder().build()
     private val adListener = object : AdListener() {
         override fun onAdClosed() {
             interstitialAd.loadAd(adRequest)
