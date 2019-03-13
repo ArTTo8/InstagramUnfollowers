@@ -23,6 +23,7 @@ class InstagramRepository(private val userDataStore: UserDataStore,
     private var adShowCounter = 0
 
     val users = ArrayList<InstagramUser>()
+    var userPhotoUrl = ""
 
     fun getUserData() = userDataStore.loadUserData()
 
@@ -45,6 +46,7 @@ class InstagramRepository(private val userDataStore: UserDataStore,
         try {
             val result = instagram.login()
             userDataStore.saveUserData(instagram.username, instagram.password)
+            userPhotoUrl = result.logged_in_user.profile_pic_url
             it.onSuccess(result.logged_in_user)
         } catch (e: Exception) {
             it.tryOnError(e)

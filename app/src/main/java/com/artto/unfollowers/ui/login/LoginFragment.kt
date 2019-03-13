@@ -3,6 +3,7 @@ package com.artto.unfollowers.ui.login
 import android.animation.Animator
 import android.animation.AnimatorInflater
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
@@ -56,6 +57,7 @@ class LoginFragment : BaseFragment(), LoginView {
 
     override fun showInputs(show: Boolean) {
         val visibility = if (show) View.VISIBLE else View.GONE
+        tv_login_hint.visibility = visibility
         et_username.visibility = visibility
         et_password.visibility = visibility
         b_login.visibility = visibility

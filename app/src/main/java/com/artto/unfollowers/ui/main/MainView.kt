@@ -12,7 +12,7 @@ interface MainView : BaseView {
     fun showProgressBar(show: Boolean)
 
     @StateStrategyType(AddToEndSingleStrategy::class)
-    fun setUsername(username: String)
+    fun setUserPhoto(url: String)
 
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun notifyDataSetChanged()

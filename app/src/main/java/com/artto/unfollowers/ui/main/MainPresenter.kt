@@ -1,5 +1,9 @@
 package com.artto.unfollowers.ui.main
 
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.arellomobile.mvp.InjectViewState
 import com.artto.unfollowers.data.remote.InstagramRepository
 import com.artto.unfollowers.data.remote.InstagramUser
@@ -7,10 +11,12 @@ import com.artto.unfollowers.ui.base.BasePresenter
 import com.artto.unfollowers.utils.*
 import com.artto.unfollowers.utils.extension.withProgress
 import com.artto.unfollowers.utils.extension.withSchedulers
+import com.artto.unfollowers.worker.StatisticWorker
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 @InjectViewState
 class MainPresenter(private val instagramRepository: InstagramRepository) : BasePresenter<MainView>(), UsersAdapterPresenter {
@@ -21,9 +27,23 @@ class MainPresenter(private val instagramRepository: InstagramRepository) : Base
 
 
     override fun onFirstViewAttach() {
-        viewState.setUsername(instagramRepository.getUserData().first)
+        viewState.setUserPhoto(instagramRepository.userPhotoUrl)
 
         loadUnfollowers()
+        initStatisticWorker()
+    }
+
+    private fun initStatisticWorker() {
+        val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+        val statisticWork = PeriodicWorkRequestBuilder<StatisticWorker>(1, TimeUnit.HOURS, 30, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build()
+
+        WorkManager.getInstance()
+                .enqueue(statisticWork)
     }
 
     private fun loadUnfollowers() {
@@ -35,7 +55,7 @@ class MainPresenter(private val instagramRepository: InstagramRepository) : Base
                             items.addAll(it)
                             viewState.notifyDataSetChanged()
                         },
-                        onError = { it.printStackTrace() })
+                        onError = { onTabSelected(TabTag.TAG_UNFOLLOWERS) })
                 .addTo(compositeDisposable)
     }
 

@@ -30,21 +30,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2" />
 
-                <Button
-                    android:id="@+id/b_toolbar_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="15dp"
-                    android:background="@drawable/bg_toolbar_username"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/futurademic"
-                    android:maxWidth="1000dp"
-                    android:maxLines="1"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="12sp"
-                    tools:text="@tools:sample/cities" />
+                <ImageView
+                    android:id="@+id/iv_toolbar_user"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="14dp"
+                    tools:ignore="ContentDescription"
+                    tools:src="@tools:sample/avatars" />
 
             </LinearLayout>
 

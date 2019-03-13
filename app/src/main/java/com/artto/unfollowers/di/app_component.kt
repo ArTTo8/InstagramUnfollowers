@@ -6,6 +6,7 @@ import com.artto.unfollowers.data.local.UserDataStore
 import com.artto.unfollowers.data.local.db.AppDatabase
 import com.artto.unfollowers.data.local.db.repository.StatisticRepository
 import com.artto.unfollowers.data.remote.InstagramRepository
+import com.artto.unfollowers.notification.NotificationDispatcher
 import com.artto.unfollowers.ui.login.LoginPresenter
 import com.artto.unfollowers.ui.main.MainPresenter
 import com.artto.unfollowers.ui.menu.MenuPresenter
@@ -25,6 +26,8 @@ val uiModule = module {
 }
 
 val dataModule = module {
+
+    single { NotificationDispatcher(androidContext()) }
 
     single { androidContext().getSharedPreferences(KEY_SHARED_USER, Context.MODE_PRIVATE) }
     single { UserDataStore(get()) }

@@ -70,9 +70,9 @@ class MainFragment : BaseFragment(), MainView {
         with(sv_search) {
             setOnQueryTextFocusChangeListener { _, hasFocus ->
                 if (hasFocus)
-                    b_toolbar_username.visibility = View.GONE
+                    iv_toolbar_user.visibility = View.GONE
                 else {
-                    b_toolbar_username.visibility = View.VISIBLE
+                    iv_toolbar_user.visibility = View.VISIBLE
                     sv_search.isIconified = true
                 }
             }
@@ -83,7 +83,7 @@ class MainFragment : BaseFragment(), MainView {
             }
         }
 
-        b_toolbar_username.setOnClickListener { createFragment<MenuDialogFragment>().show(childFragmentManager, null) }
+        iv_toolbar_user.setOnClickListener { createFragment<MenuDialogFragment>().show(childFragmentManager, null) }
 
         fab_up.setOnClickListener { rv_users.smoothScrollToPosition(0) }
 
@@ -97,8 +97,13 @@ class MainFragment : BaseFragment(), MainView {
         tl_groups.getTabAt(savedInstanceState?.getInt(KEY_TAB_POSITION, 0) ?: 0)?.select()
     }
 
-    override fun setUsername(username: String) {
-        b_toolbar_username.text = username
+    override fun setUserPhoto(url: String) {
+        Glide.with(this)
+                .load(url)
+                .transition(withCrossFade())
+                .circleCrop()
+                .placeholder(R.drawable.ic_person)
+                .into(iv_toolbar_user)
     }
 
     override fun showProgressBar(show: Boolean) {

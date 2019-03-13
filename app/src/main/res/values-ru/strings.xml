@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Instagram Unfollowers</string>
     <string name="etLogin">Логин</string>
     <string name="etPassword">Пароль</string>
     <string name="bLogin">Войти</string>
@@ -13,4 +12,5 @@
     <string name="statistic_following">Вы подписаны\n%1$d</string>
     <string name="statistic_unfollowers">Невзаимные\n%1$d</string>
     <string name="menu_statistic">Статистика</string>
+    <string name="tvLoginHint">Ваш аккаунт</string>
 </resources>

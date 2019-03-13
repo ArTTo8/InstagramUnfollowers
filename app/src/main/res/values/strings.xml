@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">Unfollowers</string>
+    <string name="app_name" translatable="false">Unfollowers</string>
 
+    <string name="tvLoginHint">Your account</string>
     <string name="etLogin">Username</string>
     <string name="etPassword">Password</string>
     <string name="bLogin">Sign in</string>
