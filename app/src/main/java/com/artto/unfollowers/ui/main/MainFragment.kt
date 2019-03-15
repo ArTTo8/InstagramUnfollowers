@@ -137,7 +137,7 @@ class MainFragment : BaseFragment(), MainView {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putInt(KEY_TAB_POSITION, tl_groups.selectedTabPosition)
+        tl_groups?.let { outState.putInt(KEY_TAB_POSITION, it.selectedTabPosition) }
     }
 
     override fun onDestroyView() {

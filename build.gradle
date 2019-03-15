@@ -41,6 +41,8 @@ buildscript {
         progress_bar_version="1.2.2"
 
         mp_android_chart_version = "v3.1.0-alpha"
+
+        stetho_version = "1.5.0"
     }
 
     repositories {

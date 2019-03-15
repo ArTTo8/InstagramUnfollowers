@@ -1,25 +1,21 @@
 package com.artto.unfollowers.ui.main
 
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.arellomobile.mvp.InjectViewState
+import com.artto.unfollowers.analytics.AnalyticsManager
 import com.artto.unfollowers.data.remote.InstagramRepository
 import com.artto.unfollowers.data.remote.InstagramUser
 import com.artto.unfollowers.ui.base.BasePresenter
-import com.artto.unfollowers.utils.*
+import com.artto.unfollowers.utils.TabTag
 import com.artto.unfollowers.utils.extension.withProgress
 import com.artto.unfollowers.utils.extension.withSchedulers
-import com.artto.unfollowers.worker.StatisticWorker
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 
 @InjectViewState
-class MainPresenter(private val instagramRepository: InstagramRepository) : BasePresenter<MainView>(), UsersAdapterPresenter {
+class MainPresenter(private val instagramRepository: InstagramRepository,
+                    private val analyticsManager: AnalyticsManager) : BasePresenter<MainView>(), UsersAdapterPresenter {
 
     private var query = ""
     private val items = ArrayList<InstagramUser>()
@@ -30,20 +26,6 @@ class MainPresenter(private val instagramRepository: InstagramRepository) : Base
         viewState.setUserPhoto(instagramRepository.userPhotoUrl)
 
         loadUnfollowers()
-        initStatisticWorker()
-    }
-
-    private fun initStatisticWorker() {
-        val constraints = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-
-        val statisticWork = PeriodicWorkRequestBuilder<StatisticWorker>(1, TimeUnit.HOURS, 30, TimeUnit.MINUTES)
-                .setConstraints(constraints)
-                .build()
-
-        WorkManager.getInstance()
-                .enqueue(statisticWork)
     }
 
     private fun loadUnfollowers() {
@@ -86,6 +68,7 @@ class MainPresenter(private val instagramRepository: InstagramRepository) : Base
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .withProgress(viewState::showProgressBar)
                 .doOnSubscribe { if (instagramRepository.needToShowAd()) viewState.showAd() }
+                .doOnSubscribe { analyticsManager.logEvent(AnalyticsManager.Event.UNFOLLOW) }
                 .subscribeBy(onError = { it.printStackTrace() })
                 .addTo(compositeDisposable)
 
@@ -99,6 +82,7 @@ class MainPresenter(private val instagramRepository: InstagramRepository) : Base
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .withProgress(viewState::showProgressBar)
                 .doOnSubscribe { if (instagramRepository.needToShowAd()) viewState.showAd() }
+                .doOnSubscribe { analyticsManager.logEvent(AnalyticsManager.Event.FOLLOW) }
                 .subscribeBy(
                         onSuccess = {
                             if (it.status == "ok") {

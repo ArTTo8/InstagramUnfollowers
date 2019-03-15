@@ -1,6 +1,7 @@
 package com.artto.unfollowers.ui.login
 
 import com.arellomobile.mvp.InjectViewState
+import com.artto.unfollowers.analytics.AnalyticsManager
 import com.artto.unfollowers.data.remote.InstagramRepository
 import com.artto.unfollowers.ui.base.BasePresenter
 import com.artto.unfollowers.utils.extension.withSchedulers
@@ -10,7 +11,8 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 @InjectViewState
-class LoginPresenter(private val instagramRepository: InstagramRepository) : BasePresenter<LoginView>() {
+class LoginPresenter(private val instagramRepository: InstagramRepository,
+                     private val analyticsManager: AnalyticsManager) : BasePresenter<LoginView>() {
 
     override fun onFirstViewAttach() {
         with(instagramRepository.getUserData()) {
@@ -31,6 +33,7 @@ class LoginPresenter(private val instagramRepository: InstagramRepository) : Bas
                     viewState.animateLogo(true)
                 }
                 .doOnEvent { _, _ -> viewState.animateLogo(false) }
+                .doOnSuccess { analyticsManager.logEvent(AnalyticsManager.Event.LOGIN) }
                 .subscribeBy(
                         onSuccess = { viewState.navigateToMain() },
                         onError = {

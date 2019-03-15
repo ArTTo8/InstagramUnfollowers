@@ -18,7 +18,10 @@ class StatisticPresenter(private val statisticRepository: StatisticRepository,
         statisticRepository.getAll(instagramRepository.getUserId())
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .subscribeBy(
-                        onSuccess = { viewState.showData(it) },
+                        onSuccess = {
+                            if (it.isNotEmpty())
+                                viewState.showData(it)
+                        },
                         onError = { it.printStackTrace() })
                 .addTo(compositeDisposable)
     }
