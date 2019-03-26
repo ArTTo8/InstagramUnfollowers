@@ -32,4 +32,7 @@ interface MainView : BaseView {
     @StateStrategyType(OneExecutionStateStrategy::class)
     fun showAd()
 
+    @StateStrategyType(OneExecutionStateStrategy::class)
+    fun showRateDialog()
+
 }

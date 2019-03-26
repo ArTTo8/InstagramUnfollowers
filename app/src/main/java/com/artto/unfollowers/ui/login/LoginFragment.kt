@@ -59,7 +59,7 @@ class LoginFragment : BaseFragment(), LoginView {
         val visibility = if (show) View.VISIBLE else View.GONE
         tv_login_hint.visibility = visibility
         et_username.visibility = visibility
-        et_password.visibility = visibility
+        tli_password.visibility = visibility
         b_login.visibility = visibility
     }
 

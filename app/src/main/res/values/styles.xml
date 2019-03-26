@@ -19,7 +19,6 @@
         <item name="android:fontFamily">@font/futurabookc</item>
         <item name="android:textColorHint">@android:color/darker_gray</item>
         <item name="android:background">@drawable/bg_login_edit_text</item>
-        <item name="android:textAlignment">center</item>
     </style>
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">

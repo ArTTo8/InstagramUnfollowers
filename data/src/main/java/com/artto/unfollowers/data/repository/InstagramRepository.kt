@@ -1,8 +1,9 @@
-package com.artto.unfollowers.data.remote
+package com.artto.unfollowers.data.repository
 
-import com.artto.unfollowers.data.local.UserDataStore
 import com.artto.unfollowers.data.local.db.entity.StatisticEntity
 import com.artto.unfollowers.data.local.db.repository.StatisticRepository
+import com.artto.unfollowers.data.remote.Instagram
+import com.artto.unfollowers.data.remote.InstagramUser
 import com.artto.unfollowers.utils.setTimeToDateStart
 import dev.niekirk.com.instagram4android.requests.InstagramFollowRequest
 import dev.niekirk.com.instagram4android.requests.InstagramGetUserFollowersRequest
@@ -16,27 +17,15 @@ import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 import java.util.*
 
-class InstagramRepository(private val userDataStore: UserDataStore,
-                          private val statisticRepository: StatisticRepository) {
+class InstagramRepository(private val statisticRepository: StatisticRepository,
+                          private val userRepository: UserRepository) {
 
     private lateinit var instagram: Instagram
-    private var adShowCounter = 0
 
     val users = ArrayList<InstagramUser>()
     var userPhotoUrl = ""
 
-    fun getUserData() = userDataStore.loadUserData()
-
     fun getUserId() = instagram.userId
-
-    fun needToShowAd(): Boolean =
-            if (adShowCounter <= 0) {
-                adShowCounter = 5
-                true
-            } else {
-                --adShowCounter
-                false
-            }
 
 
     fun logIn(username: String, password: String): Single<InstagramLoggedUser> = Single.create {
@@ -45,7 +34,7 @@ class InstagramRepository(private val userDataStore: UserDataStore,
 
         try {
             val result = instagram.login()
-            userDataStore.saveUserData(instagram.username, instagram.password)
+            userRepository.updateUserData(username = instagram.username, password = instagram.password, firstOpen = Date())
             userPhotoUrl = result.logged_in_user.profile_pic_url
             it.onSuccess(result.logged_in_user)
         } catch (e: Exception) {
@@ -56,7 +45,7 @@ class InstagramRepository(private val userDataStore: UserDataStore,
 
     fun logOut() {
         users.clear()
-        userDataStore.clearUserData()
+        userRepository.updateUserData(username = "", password = "")
     }
 
 
@@ -82,7 +71,7 @@ class InstagramRepository(private val userDataStore: UserDataStore,
     }
 
 
-    fun getUnfollowers(): Single<List<InstagramUser>> = Single
+    fun getUnfollowers(): Completable = Single
             .zip(
                     getAllFollowers(),
                     getAllFollowing(),
@@ -92,7 +81,9 @@ class InstagramRepository(private val userDataStore: UserDataStore,
                         users.addAll(temp.map { InstagramUser(it, followers.contains(it), following.contains(it)) }.distinct())
 
                         return@BiFunction users.filter { it.isFollowedByUser && !it.isFollower }
-                    }).flatMap { users -> saveStatistic().map { users } }
+                    })
+            .flatMap { saveStatistic() }
+            .ignoreElement()
 
     private fun saveStatistic() = statisticRepository.insert(
             StatisticEntity(

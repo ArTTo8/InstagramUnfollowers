@@ -2,9 +2,11 @@ package com.artto.unfollowers.ui.main
 
 import com.arellomobile.mvp.InjectViewState
 import com.artto.unfollowers.analytics.AnalyticsManager
-import com.artto.unfollowers.data.remote.InstagramRepository
+import com.artto.unfollowers.data.repository.InstagramRepository
 import com.artto.unfollowers.data.remote.InstagramUser
+import com.artto.unfollowers.data.repository.UserRepository
 import com.artto.unfollowers.ui.base.BasePresenter
+import com.artto.unfollowers.ui.main.recycler.*
 import com.artto.unfollowers.utils.TabTag
 import com.artto.unfollowers.utils.extension.withProgress
 import com.artto.unfollowers.utils.extension.withSchedulers
@@ -15,7 +17,11 @@ import io.reactivex.schedulers.Schedulers
 
 @InjectViewState
 class MainPresenter(private val instagramRepository: InstagramRepository,
-                    private val analyticsManager: AnalyticsManager) : BasePresenter<MainView>(), UsersAdapterPresenter {
+                    private val userRepository: UserRepository,
+                    private val analyticsManager: AnalyticsManager) :
+        BasePresenter<MainView>(),
+        UsersAdapterPresenter,
+        UsersItemPresenter {
 
     private var query = ""
     private val items = ArrayList<InstagramUser>()
@@ -26,6 +32,8 @@ class MainPresenter(private val instagramRepository: InstagramRepository,
         viewState.setUserPhoto(instagramRepository.userPhotoUrl)
 
         loadUnfollowers()
+        if (userRepository.needToShowRateDialog())
+            viewState.showRateDialog()
     }
 
     private fun loadUnfollowers() {
@@ -33,10 +41,7 @@ class MainPresenter(private val instagramRepository: InstagramRepository,
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .withProgress(viewState::showProgressBar)
                 .subscribeBy(
-                        onSuccess = {
-                            items.addAll(it)
-                            viewState.notifyDataSetChanged()
-                        },
+                        onComplete = { onTabSelected(TabTag.TAG_UNFOLLOWERS) },
                         onError = { onTabSelected(TabTag.TAG_UNFOLLOWERS) })
                 .addTo(compositeDisposable)
     }
@@ -63,11 +68,11 @@ class MainPresenter(private val instagramRepository: InstagramRepository,
         viewState.notifyDataSetChanged()
     }
 
-    private fun onUnfollowClicked(position: Int) {
+    override fun onUnfollowClicked(position: Int) {
         instagramRepository.unfollow(items[position].pk)
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .withProgress(viewState::showProgressBar)
-                .doOnSubscribe { if (instagramRepository.needToShowAd()) viewState.showAd() }
+                .doOnSubscribe { if (userRepository.needToShowAd()) viewState.showAd() }
                 .doOnSubscribe { analyticsManager.logEvent(AnalyticsManager.Event.UNFOLLOW) }
                 .subscribeBy(onError = { it.printStackTrace() })
                 .addTo(compositeDisposable)
@@ -77,11 +82,11 @@ class MainPresenter(private val instagramRepository: InstagramRepository,
         viewState.updateData(oldList, items)
     }
 
-    private fun onFollowClicked(position: Int) {
+    override fun onFollowClicked(position: Int) {
         instagramRepository.follow(items[position].pk)
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .withProgress(viewState::showProgressBar)
-                .doOnSubscribe { if (instagramRepository.needToShowAd()) viewState.showAd() }
+                .doOnSubscribe { if (userRepository.needToShowAd()) viewState.showAd() }
                 .doOnSubscribe { analyticsManager.logEvent(AnalyticsManager.Event.FOLLOW) }
                 .subscribeBy(
                         onSuccess = {
@@ -94,12 +99,10 @@ class MainPresenter(private val instagramRepository: InstagramRepository,
                 .addTo(compositeDisposable)
     }
 
-    private fun onItemClicked(position: Int) =
-            viewState.showUserProfile(items[position].username)
+    override fun onItemClicked(position: Int) = viewState.showUserProfile(items[position].username)
 
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(view: UserItemView, position: Int) =
-            view.setData(items[position], ::onUnfollowClicked, ::onFollowClicked, ::onItemClicked)
+    override fun onBindViewHolder(view: UserItemView, position: Int) = view.setData(items[position])
 
 }

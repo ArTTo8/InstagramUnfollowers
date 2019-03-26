@@ -2,7 +2,8 @@ package com.artto.unfollowers.ui.login
 
 import com.arellomobile.mvp.InjectViewState
 import com.artto.unfollowers.analytics.AnalyticsManager
-import com.artto.unfollowers.data.remote.InstagramRepository
+import com.artto.unfollowers.data.repository.InstagramRepository
+import com.artto.unfollowers.data.repository.UserRepository
 import com.artto.unfollowers.ui.base.BasePresenter
 import com.artto.unfollowers.utils.extension.withSchedulers
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,12 +13,13 @@ import io.reactivex.schedulers.Schedulers
 
 @InjectViewState
 class LoginPresenter(private val instagramRepository: InstagramRepository,
+                     private val userRepository: UserRepository,
                      private val analyticsManager: AnalyticsManager) : BasePresenter<LoginView>() {
 
     override fun onFirstViewAttach() {
-        with(instagramRepository.getUserData()) {
-            if (first.isNotBlank() && second.isNotBlank())
-                login(first, second)
+        with(userRepository.getUserData()) {
+            if (username.isNotBlank() && password.isNotBlank())
+                login(username, password)
             else
                 viewState.showInputs(true)
         }

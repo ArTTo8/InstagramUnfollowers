@@ -20,4 +20,8 @@
     <string name="statistic_following">Following count\n%1$d</string>
     <string name="statistic_unfollowers">Unfollowers count\n%1$d</string>
 
+    <string name="rate_title">Enjoying this application? Support us by rating in Google Play!</string>
+    <string name="rate_later">Later</string>
+    <string name="rate_now">Rate now</string>
+
 </resources>

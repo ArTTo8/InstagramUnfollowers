@@ -13,4 +13,7 @@
     <string name="statistic_unfollowers">Невзаимные\n%1$d</string>
     <string name="menu_statistic">Статистика</string>
     <string name="tvLoginHint">Ваш аккаунт</string>
+    <string name="rate_title">Понравилось приложение? Поддержите нас оценкой в Google Play!</string>
+    <string name="rate_later">Позже</string>
+    <string name="rate_now">Оценить</string>
 </resources>

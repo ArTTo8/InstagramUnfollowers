@@ -11,7 +11,8 @@ class AnalyticsManager(private val context: Context) {
         UNFOLLOW("unfollow"),
         LOGIN("login"),
         LOGOUT("logout"),
-        STATISTIC_OPEN("statistic_open")
+        STATISTIC_OPEN("statistic_open"),
+        RATE("rate")
     }
 
     fun logEvent(event: Event, bundle: Bundle? = null) {

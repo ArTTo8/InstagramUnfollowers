@@ -10,13 +10,13 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.artto.unfollowers.R
 import com.artto.unfollowers.ui.base.BaseFragment
+import com.artto.unfollowers.ui.main.recycler.UsersRecyclerAdapter
 import com.artto.unfollowers.ui.menu.MenuDialogFragment
+import com.artto.unfollowers.ui.rate.RateDialogFragment
 import com.artto.unfollowers.utils.*
 import com.artto.unfollowers.utils.extension.addOnTabSelectedListener
 import com.artto.unfollowers.utils.extension.setOnQueryTextChangedListener
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
@@ -54,7 +54,7 @@ class MainFragment : BaseFragment(), MainView {
             addOnTabSelectedListener { (it as? TabTag)?.let { presenter.onTabSelected(it) } }
         }
 
-        recyclerAdapter = UsersRecyclerAdapter(presenter, Glide.with(this))
+        recyclerAdapter = UsersRecyclerAdapter(presenter, presenter, Glide.with(this))
         rv_users.apply {
             setHasFixedSize(true)
             setItemViewCacheSize(30)
@@ -133,6 +133,8 @@ class MainFragment : BaseFragment(), MainView {
         if (this::interstitialAd.isInitialized && interstitialAd.isLoaded)
             interstitialAd.show()
     }
+
+    override fun showRateDialog() = createFragment<RateDialogFragment>().show(childFragmentManager, null)
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

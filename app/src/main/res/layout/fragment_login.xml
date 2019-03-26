@@ -29,7 +29,6 @@
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
         android:layout_marginBottom="8dp"
-        android:drawableEnd="@drawable/ic_instagram_logo"
         android:fontFamily="@font/futurademic"
         android:gravity="center_vertical"
         android:text="@string/tvLoginHint"
@@ -50,27 +49,40 @@
         android:autofillHints="username"
         android:hint="@string/etLogin"
         android:inputType="textNoSuggestions"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@id/et_password"
+        app:layout_constraintBottom_toTopOf="@id/tli_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/et_password"
-        style="@style/TextViewLogin"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tli_password"
         android:layout_width="0dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginBottom="8dp"
-        android:autofillHints="password"
-        android:hint="@string/etPassword"
-        android:inputType="textPassword"
-        android:visibility="visible"
+        android:layout_height="wrap_content"
+        app:hintAnimationEnabled="false"
         app:layout_constraintBottom_toTopOf="@id/b_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:passwordToggleEnabled="true"
+        app:hintEnabled="false"
+        app:passwordToggleTint="@color/colorAccent">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_password"
+            style="@style/TextViewLogin"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginBottom="8dp"
+            android:autofillHints="password"
+            android:hint="@string/etPassword"
+            android:inputType="textPassword"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/b_login"

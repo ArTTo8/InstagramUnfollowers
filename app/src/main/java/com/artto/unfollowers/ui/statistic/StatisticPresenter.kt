@@ -2,7 +2,7 @@ package com.artto.unfollowers.ui.statistic
 
 import com.arellomobile.mvp.InjectViewState
 import com.artto.unfollowers.data.local.db.repository.StatisticRepository
-import com.artto.unfollowers.data.remote.InstagramRepository
+import com.artto.unfollowers.data.repository.InstagramRepository
 import com.artto.unfollowers.ui.base.BasePresenter
 import com.artto.unfollowers.utils.extension.withSchedulers
 import io.reactivex.android.schedulers.AndroidSchedulers
