@@ -120,6 +120,7 @@ class StatisticDialogFragment : BaseDialogFragment(), StatisticView {
             colors = arrayListOf(colorFollowing, colorUnfollowers, colorFollowers)
         }
         pc_statistic_pie.data = PieData(pieDataSet)
+        pc_statistic_pie.invalidate()
 
         //Text views
         tv_statistic_followers.text = getString(R.string.statistic_followers, lastRecord.followersCount)

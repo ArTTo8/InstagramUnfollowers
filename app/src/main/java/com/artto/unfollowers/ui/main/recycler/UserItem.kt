@@ -1,8 +1,6 @@
 package com.artto.unfollowers.ui.main.recycler
 
-import android.graphics.Color
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.artto.unfollowers.R
 import com.artto.unfollowers.data.remote.InstagramUser

@@ -54,7 +54,7 @@ class MainFragment : BaseFragment(), MainView {
             addOnTabSelectedListener { (it as? TabTag)?.let { presenter.onTabSelected(it) } }
         }
 
-        recyclerAdapter = UsersRecyclerAdapter(presenter, presenter, Glide.with(this))
+        recyclerAdapter = UsersRecyclerAdapter(presenter, presenter, presenter, Glide.with(this))
         rv_users.apply {
             setHasFixedSize(true)
             setItemViewCacheSize(30)

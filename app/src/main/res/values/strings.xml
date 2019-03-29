@@ -24,4 +24,6 @@
     <string name="rate_later">Later</string>
     <string name="rate_now">Rate now</string>
 
+    <string name="multiple_unfollow">Unfollow first 20 users</string>
+
 </resources>

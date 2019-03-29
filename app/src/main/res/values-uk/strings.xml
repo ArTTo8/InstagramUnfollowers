@@ -16,4 +16,5 @@
     <string name="rate_title">Сподобався додаток? Підтримай нас оцінкою в Google Play!</string>
     <string name="rate_later">Пізніше</string>
     <string name="rate_now">Оцінити</string>
+    <string name="multiple_unfollow">Відписатись від перших 20-ти</string>
 </resources>

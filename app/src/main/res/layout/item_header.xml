@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/b_header_unfollow"
+    android:layout_width="match_parent"
+    android:layout_height="32dp"
+    android:layout_gravity="center"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginEnd="32dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_user_unfollow_button"
+    android:fontFamily="@font/futurademic"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:text="@string/multiple_unfollow"
+    android:textColor="@android:color/white"
+    android:textSize="12sp" />
