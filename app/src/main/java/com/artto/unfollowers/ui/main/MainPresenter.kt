@@ -87,7 +87,7 @@ class MainPresenter(private val instagramRepository: InstagramRepository,
     }
 
     override fun onMultipleUnfollowClicked() {
-        val count = 20
+        val count = if (20 > items.size) items.size else 20
         val unfollowList = items.subList(0, count)
         Observable.fromIterable(unfollowList)
                 .flatMap { instagramRepository.unfollow(it.pk).andThen(Observable.just(it)) }

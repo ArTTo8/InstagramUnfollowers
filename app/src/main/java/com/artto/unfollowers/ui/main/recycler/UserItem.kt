@@ -15,7 +15,10 @@ class UserViewHolder(itemView: View,
 
     init {
         with(itemView) {
-            setOnClickListener { presenter.onItemClicked(adapterPosition) }
+            setOnClickListener {
+                if (adapterPosition != -1)
+                    presenter.onItemClicked(adapterPosition)
+            }
         }
     }
 
