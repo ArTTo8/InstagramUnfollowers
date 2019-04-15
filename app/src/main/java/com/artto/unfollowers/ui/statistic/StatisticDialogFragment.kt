@@ -9,6 +9,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.artto.unfollowers.R
 import com.artto.unfollowers.data.local.db.entity.StatisticEntity
 import com.artto.unfollowers.ui.base.BaseDialogFragment
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
@@ -103,8 +104,8 @@ class StatisticDialogFragment : BaseDialogFragment(), StatisticView {
             }
 
             this.data = LineData(listOf(followersDataSet, followingDataSet, unfollowersDataSet))
-            setVisibleXRangeMaximum(5f)
             moveViewToX(this.data.xMax)
+            animateY(500)
         }
 
         //Pie chart
@@ -120,7 +121,7 @@ class StatisticDialogFragment : BaseDialogFragment(), StatisticView {
             colors = arrayListOf(colorFollowing, colorUnfollowers, colorFollowers)
         }
         pc_statistic_pie.data = PieData(pieDataSet)
-        pc_statistic_pie.invalidate()
+        pc_statistic_pie.animateX(500)
 
         //Text views
         tv_statistic_followers.text = getString(R.string.statistic_followers, lastRecord.followersCount)

@@ -17,7 +17,7 @@ android {
         applicationId "com.artto.unfollowers"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 6
+        versionCode 7
         versionName "1.0.4"
         multiDexEnabled = true
     }
@@ -65,6 +65,9 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraint_layout_version"
     implementation "com.google.android.material:material:$rootProject.ext.material_version"
     implementation "androidx.core:core-ktx:$rootProject.ext.android_ktx_version"
+
+    //Lottie
+    implementation "com.airbnb.android:lottie:$rootProject.ext.lottie_version"
 
     //NavigationUI
     implementation "android.arch.navigation:navigation-fragment-ktx:$rootProject.ext.navigation_version"

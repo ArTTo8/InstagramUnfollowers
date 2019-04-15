@@ -39,13 +39,17 @@ class MainPresenter(private val instagramRepository: InstagramRepository,
             viewState.showRateDialog()
     }
 
-    private fun loadUnfollowers() {
+    fun onRefresh(tag: TabTag?) {
+        loadUnfollowers(tag ?: TabTag.TAG_UNFOLLOWERS)
+    }
+
+    private fun loadUnfollowers(tag: TabTag = TabTag.TAG_UNFOLLOWERS) {
         instagramRepository.getUnfollowers()
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .withProgress(viewState::showProgressBar)
                 .subscribeBy(
-                        onComplete = { onTabSelected(TabTag.TAG_UNFOLLOWERS) },
-                        onError = { onTabSelected(TabTag.TAG_UNFOLLOWERS) })
+                        onComplete = { onTabSelected(tag) },
+                        onError = { onTabSelected(tag) })
                 .addTo(compositeDisposable)
     }
 
@@ -74,6 +78,8 @@ class MainPresenter(private val instagramRepository: InstagramRepository,
 
     override fun onUnfollowClicked(position: Int) {
         instagramRepository.unfollow(items[position].pk)
+                .toSingleDefault(1)
+                .flatMap { instagramRepository.saveStatistic() }
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .withProgress(viewState::showProgressBar)
                 .doOnSubscribe { if (userRepository.needToShowAd()) viewState.showAd() }
@@ -88,17 +94,18 @@ class MainPresenter(private val instagramRepository: InstagramRepository,
 
     override fun onMultipleUnfollowClicked() {
         val count = if (20 > items.size) items.size else 20
-        val unfollowList = items.subList(0, count)
+        val unfollowList = ArrayList(items.subList(0, count))
         Observable.fromIterable(unfollowList)
                 .flatMap { instagramRepository.unfollow(it.pk).andThen(Observable.just(it)) }
                 .doOnNext { analyticsManager.logEvent(AnalyticsManager.Event.UNFOLLOW) }
+                .flatMapSingle { instagramRepository.saveStatistic() }
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .withProgress(viewState::showProgressBar)
                 .doOnSubscribe { viewState.showAd() }
                 .subscribeBy(
                         onComplete = {
                             val oldList = ArrayList(items)
-                            items.removeAll(items.subList(0, count))
+                            items.removeAll(unfollowList)
                             viewState.updateData(oldList, items)
                         },
                         onError = {
@@ -110,6 +117,7 @@ class MainPresenter(private val instagramRepository: InstagramRepository,
 
     override fun onFollowClicked(position: Int) {
         instagramRepository.follow(items[position].pk)
+                .flatMap { result -> instagramRepository.saveStatistic().map { result } }
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .withProgress(viewState::showProgressBar)
                 .doOnSubscribe { if (userRepository.needToShowAd()) viewState.showAd() }

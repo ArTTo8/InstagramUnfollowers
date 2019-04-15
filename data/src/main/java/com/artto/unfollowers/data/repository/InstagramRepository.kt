@@ -85,7 +85,7 @@ class InstagramRepository(private val statisticRepository: StatisticRepository,
             .flatMap { saveStatistic() }
             .ignoreElement()
 
-    private fun saveStatistic() = statisticRepository.insert(
+    fun saveStatistic() = statisticRepository.insert(
             StatisticEntity(
                     Calendar.getInstance().setTimeToDateStart().time,
                     instagram.userId,

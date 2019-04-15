@@ -3,6 +3,7 @@ package com.artto.unfollowers.ui.main
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,6 +53,7 @@ class MainFragment : BaseFragment(), MainView {
             addTab(newTab().setText(R.string.followers).setTag(TabTag.TAG_FOLLOWERS))
             addTab(newTab().setText(R.string.following).setTag(TabTag.TAG_FOLLOWING))
             addOnTabSelectedListener { (it as? TabTag)?.let { presenter.onTabSelected(it) } }
+            getTabAt(savedInstanceState?.getInt(KEY_TAB_POSITION, 0) ?: 0)?.select()
         }
 
         recyclerAdapter = UsersRecyclerAdapter(presenter, presenter, presenter, Glide.with(this))
@@ -65,6 +67,15 @@ class MainFragment : BaseFragment(), MainView {
                     fab_up.visibility = if (it) View.VISIBLE else View.GONE
                 })
             }
+        }
+
+        with(srl_users) {
+            setColorSchemeColors(ContextCompat.getColor(context, R.color.colorAccent))
+            setOnRefreshListener {
+                isRefreshing = false
+                presenter.onRefresh(tl_groups.getTabAt(tl_groups.selectedTabPosition)?.tag as? TabTag)
+            }
+
         }
 
         with(sv_search) {
@@ -93,8 +104,6 @@ class MainFragment : BaseFragment(), MainView {
             adListener = this@MainFragment.adListener
             loadAd(adRequest)
         }
-
-        tl_groups.getTabAt(savedInstanceState?.getInt(KEY_TAB_POSITION, 0) ?: 0)?.select()
     }
 
     override fun setUserPhoto(url: String) {

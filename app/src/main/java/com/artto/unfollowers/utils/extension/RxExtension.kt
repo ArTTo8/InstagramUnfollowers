@@ -24,6 +24,3 @@ fun Completable.withSchedulers(observeOn: Scheduler, subscribeOn: Scheduler): Co
 
 fun Completable.withProgress(progress: (Boolean) -> Unit): Completable =
         doOnSubscribe { progress.invoke(true) }.doOnComplete { progress.invoke(false) }
-
-fun <T> Observable<T>.delayEach(interval: Long, timeUnit: TimeUnit): Observable<T> =
-        Observable.zip(this, Observable.interval(interval, timeUnit), BiFunction { item, _ -> item })

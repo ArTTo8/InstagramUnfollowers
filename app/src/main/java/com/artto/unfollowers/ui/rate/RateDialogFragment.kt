@@ -24,6 +24,7 @@ class RateDialogFragment : BaseDialogFragment(), RateView {
 
         b_rate_later.setOnClickListener { dismiss() }
         b_rate.setOnClickListener { presenter.onRateClicked() }
+        iv_rate_img.playAnimation()
     }
 
     override fun openGooglePlay() {
@@ -36,7 +37,7 @@ class RateDialogFragment : BaseDialogFragment(), RateView {
 
         dialog?.window?.apply {
             setLayout(
-                    (resources.displayMetrics.widthPixels * 0.9).toInt(),
+                    (resources.displayMetrics.widthPixels * 0.75).toInt(),
                     attributes.height)
 
             setBackgroundDrawableResource(android.R.color.transparent)

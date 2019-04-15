@@ -34,29 +34,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_rate_title" />
 
-        <ImageView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/iv_rate_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:src="@drawable/ic_like"
-            android:tint="@color/colorAccent"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/v_rate_div"
+            app:lottie_rawRes="@raw/anim_rate"
             tools:ignore="ContentDescription" />
 
         <Button
             android:id="@+id/b_rate_later"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="32dp"
+            android:layout_height="40dp"
             android:layout_marginRight="0.5dp"
             android:background="@color/colorAccent"
             android:fontFamily="@font/futurademic"
             android:text="@string/rate_later"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/b_rate"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,14 +63,13 @@
         <Button
             android:id="@+id/b_rate"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="0.5dp"
-            android:layout_marginTop="32dp"
             android:background="@color/colorAccent"
             android:fontFamily="@font/futurademic"
             android:text="@string/rate_now"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/b_rate_later"
