@@ -17,8 +17,8 @@ android {
         applicationId "com.artto.unfollowers"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 7
-        versionName "1.0.4"
+        versionCode 9
+        versionName "1.0.5"
         multiDexEnabled = true
     }
 
@@ -45,13 +45,19 @@ android {
     }
 
     aaptOptions {
+        ignoreAssetsPattern "!*ffprobe"
         ignoreAssetsPattern "!*ffmpeg"
+    }
+
+    packagingOptions {
+        exclude 'lib/armeabi-v7a/libARM_ARCH.so'
+        exclude 'lib/armeabi/libARM_ARCH.so'
+        exclude 'lib/x86/libARM_ARCH.so'
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(path: ':data')
 
     //MultiDex
     implementation "com.android.support:multidex:$rootProject.ext.multidex_version"
@@ -77,6 +83,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$rootProject.ext.firebase_version"
     implementation "com.crashlytics.sdk.android:crashlytics:$rootProject.ext.crashlitics_version"
     implementation "com.google.android.gms:play-services-ads:$rootProject.ext.ads_version"
+    implementation "com.google.android.gms:play-services-location:$rootProject.ext.location_version"
 
     //Moxy
     implementation "com.arello-mobile:moxy-app-compat:$rootProject.ext.moxy_version"
@@ -99,12 +106,28 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$rootProject.ext.glide_version"
 
     //Instagram API
-    implementation "com.github.charlieAndroidDev:Instagram4Android:$rootProject.ext.instagram_api_version"
+    implementation ("com.github.charlieAndroidDev:Instagram4Android:$rootProject.ext.instagram_api_version") {
+        exclude group: 'com.squareup.okhttp3'
+    }
 
     //ProgressBar
     implementation "com.budiyev.android:circular-progress-bar:$rootProject.ext.progress_bar_version"
 
     //MPAndroidChart
     implementation "com.github.PhilJay:MPAndroidChart:$rootProject.ext.mp_android_chart_version"
+
+    //Stetho
+    implementation "com.facebook.stetho:stetho:$rootProject.ext.stetho_version"
+
+
+    //Appodel
+    implementation ("com.appodeal.ads:nodex:$rootProject.ext.appodeal_version")
+    implementation 'com.appodeal.optional:flurry-ads:11.6.0'
+    implementation 'com.appodeal.optional:flurry-analytics:11.6.0'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.8.4'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.8.4'
+
+    //RxWorker
+    implementation "androidx.work:work-rxjava2:$rootProject.ext.rx_worker_version"
 
 }

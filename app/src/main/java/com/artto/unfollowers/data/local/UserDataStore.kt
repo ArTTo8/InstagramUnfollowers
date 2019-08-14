@@ -14,8 +14,10 @@ class UserDataStore(private val sharedPreferences: SharedPreferences) {
 
     fun loadUserData(): UserEntity = sharedPreferences.run {
         UserEntity(
-                getString(KEY_USERNAME, "") ?: "",
-                getString(KEY_PASSWORD, "") ?: "",
+                getString(KEY_USERNAME, "")
+                        ?: "",
+                getString(KEY_PASSWORD, "")
+                        ?: "",
                 Date(getLong(KEY_FIRST_OPEN_DATE, 0)),
                 getBoolean(KEY_RATE_DIALOG_SHOWED, false)
         )

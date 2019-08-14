@@ -7,6 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.appodeal.ads.Appodeal
+import com.appodeal.ads.InterstitialCallbacks
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import com.artto.unfollowers.R
@@ -36,14 +38,6 @@ class MainFragment : BaseFragment(), MainView {
     fun providePresenter() = inject<MainPresenter>().value
 
     private lateinit var recyclerAdapter: UsersRecyclerAdapter
-
-    private lateinit var interstitialAd: InterstitialAd
-    private var adRequest = AdRequest.Builder().build()
-    private val adListener = object : AdListener() {
-        override fun onAdClosed() {
-            interstitialAd.loadAd(adRequest)
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -97,13 +91,6 @@ class MainFragment : BaseFragment(), MainView {
         iv_toolbar_user.setOnClickListener { createFragment<MenuDialogFragment>().show(childFragmentManager, null) }
 
         fab_up.setOnClickListener { rv_users.smoothScrollToPosition(0) }
-
-        interstitialAd = InterstitialAd(context)
-        with(interstitialAd) {
-            adUnitId = Ads.FOLLOW_UNFOLLOW_AD_ID
-            adListener = this@MainFragment.adListener
-            loadAd(adRequest)
-        }
     }
 
     override fun setUserPhoto(url: String) {
@@ -139,8 +126,7 @@ class MainFragment : BaseFragment(), MainView {
     }
 
     override fun showAd() {
-        if (this::interstitialAd.isInitialized && interstitialAd.isLoaded)
-            interstitialAd.show()
+        activity?.let { Appodeal.show(it, Appodeal.INTERSTITIAL) }
     }
 
     override fun showRateDialog() = createFragment<RateDialogFragment>().show(childFragmentManager, null)

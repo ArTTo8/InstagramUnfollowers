@@ -35,8 +35,10 @@ class InstagramRepository(private val statisticRepository: StatisticRepository,
         try {
             val result = instagram.login()
             userRepository.updateUserData(username = instagram.username, password = instagram.password, firstOpen = Date())
-            userPhotoUrl = result.logged_in_user.profile_pic_url
-            it.onSuccess(result.logged_in_user)
+            result.logged_in_user?.let { loggedUser ->
+                userPhotoUrl = loggedUser.profile_pic_url
+                it.onSuccess(result.logged_in_user)
+            } ?: it.onError(java.lang.Exception("Login error"))
         } catch (e: Exception) {
             it.tryOnError(e)
         }
@@ -71,7 +73,7 @@ class InstagramRepository(private val statisticRepository: StatisticRepository,
     }
 
 
-    fun getUnfollowers(): Completable = Single
+    fun getUnfollowers(): Single<Long> = Single
             .zip(
                     getAllFollowers(),
                     getAllFollowing(),
@@ -83,7 +85,6 @@ class InstagramRepository(private val statisticRepository: StatisticRepository,
                         return@BiFunction users.filter { it.isFollowedByUser && !it.isFollower }
                     })
             .flatMap { saveStatistic() }
-            .ignoreElement()
 
     fun saveStatistic() = statisticRepository.insert(
             StatisticEntity(

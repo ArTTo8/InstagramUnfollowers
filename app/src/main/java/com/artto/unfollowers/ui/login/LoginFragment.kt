@@ -3,7 +3,6 @@ package com.artto.unfollowers.ui.login
 import android.animation.Animator
 import android.animation.AnimatorInflater
 import android.graphics.Color
-import android.graphics.PorterDuff
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View

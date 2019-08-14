@@ -17,4 +17,5 @@
     <string name="rate_later">Позже</string>
     <string name="rate_now">Оценить</string>
     <string name="multiple_unfollow">Отписаться от первый 20-ти</string>
+    <string name="new_unfollowers_notification">Внимение! У вас появились новые невзаисные подписчики - %1$d</string>
 </resources>

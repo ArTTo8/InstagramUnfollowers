@@ -1,10 +1,13 @@
 package com.artto.unfollowers.ui.main
 
+import androidx.work.*
 import com.arellomobile.mvp.InjectViewState
+import com.artto.unfollowers.UnfollowersWorker
 import com.artto.unfollowers.analytics.AnalyticsManager
 import com.artto.unfollowers.data.remote.InstagramUser
 import com.artto.unfollowers.data.repository.InstagramRepository
 import com.artto.unfollowers.data.repository.UserRepository
+import com.artto.unfollowers.notifications.NotificationsManager
 import com.artto.unfollowers.ui.base.BasePresenter
 import com.artto.unfollowers.ui.main.recycler.*
 import com.artto.unfollowers.utils.TabTag
@@ -15,6 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 @InjectViewState
 class MainPresenter(private val instagramRepository: InstagramRepository,
@@ -37,10 +41,29 @@ class MainPresenter(private val instagramRepository: InstagramRepository,
         loadUnfollowers()
         if (userRepository.needToShowRateDialog())
             viewState.showRateDialog()
+
+//        enqueueWorkManager()
     }
 
     fun onRefresh(tag: TabTag?) {
+//        enqueueWorkManager()
         loadUnfollowers(tag ?: TabTag.TAG_UNFOLLOWERS)
+    }
+
+    private fun enqueueWorkManager() {
+        val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+//        val request = PeriodicWorkRequest.Builder(UnfollowersWorker::class.java, PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS, PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS, TimeUnit.MILLISECONDS)
+//                .setConstraints(constraints)
+//                .build()
+
+        val request = OneTimeWorkRequest.Builder(UnfollowersWorker::class.java)
+                .setConstraints(constraints)
+                .build()
+
+        WorkManager.getInstance().enqueue(request)
     }
 
     private fun loadUnfollowers(tag: TabTag = TabTag.TAG_UNFOLLOWERS) {
@@ -48,7 +71,7 @@ class MainPresenter(private val instagramRepository: InstagramRepository,
                 .withSchedulers(AndroidSchedulers.mainThread(), Schedulers.io())
                 .withProgress(viewState::showProgressBar)
                 .subscribeBy(
-                        onComplete = { onTabSelected(tag) },
+                        onSuccess = { onTabSelected(tag) },
                         onError = { onTabSelected(tag) })
                 .addTo(compositeDisposable)
     }
